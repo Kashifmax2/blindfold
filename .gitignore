@@ -23,6 +23,8 @@ dist/
 .env.local
 .env.production
 .env.development
+.env.vercel
+.env.*.txt
 
 # misc
 .DS_Store
