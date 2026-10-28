@@ -15,18 +15,18 @@ export type TierKey =
   | "HYPERSPACE"
   | "SINGULARITY";
 
-export type Tier = { key: TierKey; label: string; color: string; icon: string };
+export type Tier = { key: TierKey; label: string; color: string };
 
 export const TIERS: Tier[] = [
-  { key: "CALM", label: "Calm", color: "#35e0ff", icon: "🌙" },
-  { key: "GROOVE", label: "Groove", color: "#3dffb8", icon: "🎧" },
-  { key: "HYPE", label: "Hype", color: "#b8ff3d", icon: "⚡" },
-  { key: "BLAZE", label: "Blaze", color: "#ffb02e", icon: "🔥" },
-  { key: "DANGER", label: "Danger", color: "#ff3b3b", icon: "⚠️" },
-  { key: "INFERNO", label: "Inferno", color: "#ff2fb0", icon: "☄️" },
-  { key: "ULTRA", label: "Ultraviolet", color: "#a03dff", icon: "🔮" },
-  { key: "HYPERSPACE", label: "Hyperspace", color: "#3d5cff", icon: "🌌" },
-  { key: "SINGULARITY", label: "Singularity", color: "#f1ecff", icon: "🕳️" },
+  { key: "CALM", label: "Calm", color: "#35e0ff" },
+  { key: "GROOVE", label: "Groove", color: "#3dffb8" },
+  { key: "HYPE", label: "Hype", color: "#b8ff3d" },
+  { key: "BLAZE", label: "Blaze", color: "#ffb02e" },
+  { key: "DANGER", label: "Danger", color: "#ff3b3b" },
+  { key: "INFERNO", label: "Inferno", color: "#ff2fb0" },
+  { key: "ULTRA", label: "Ultraviolet", color: "#a03dff" },
+  { key: "HYPERSPACE", label: "Hyperspace", color: "#3d5cff" },
+  { key: "SINGULARITY", label: "Singularity", color: "#f1ecff" },
 ];
 
 function hexToRgbTuple(hex: string): [number, number, number] {

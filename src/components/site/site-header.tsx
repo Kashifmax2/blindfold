@@ -3,13 +3,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { CloseIcon, MenuIcon, ShieldIcon } from "./icons";
+import { ArrowLeftIcon, CloseIcon, CrownIcon, GridIcon, MenuIcon, MusicIcon, ShieldIcon, WaveIcon } from "./icons";
 
 const LINKS = [
-  { href: "/#vault", label: "👑 My Vault" },
-  { href: "/#library", label: "Library" },
-  { href: "/#stage", label: "Visualizer" },
-  { href: "/#system", label: "System" },
+  { href: "/#vault", label: "My Vault", icon: CrownIcon },
+  { href: "/#library", label: "Library", icon: MusicIcon },
+  { href: "/#stage", label: "Visualizer", icon: WaveIcon },
+  { href: "/#system", label: "System", icon: GridIcon },
 ];
 
 export function SiteHeader({ admin = false }: { admin?: boolean }) {
@@ -67,7 +67,10 @@ export function SiteHeader({ admin = false }: { admin?: boolean }) {
               href={link.href}
               className="relative rounded-full px-4 py-2 text-xs font-semibold tracking-wider text-mist-400 transition hover:text-mist-200"
             >
-              <span className="relative z-10">{link.label}</span>
+              <span className="relative z-10 inline-flex items-center gap-1.5">
+                <link.icon width={13} height={13} className="opacity-70" />
+                {link.label}
+              </span>
               <span className="absolute inset-0 scale-90 rounded-full bg-white/0 opacity-0 transition-all duration-300 hover:bg-white/5 hover:opacity-100" />
             </Link>
           ))}
@@ -99,17 +102,19 @@ export function SiteHeader({ admin = false }: { admin?: boolean }) {
               key={link.href}
               href={link.href}
               onClick={() => setOpen(false)}
-              className="rounded-xl px-4 py-3 text-sm text-mist-300 transition hover:bg-white/5 hover:text-veil-200"
+              className="flex items-center gap-2.5 rounded-xl px-4 py-3 text-sm text-mist-300 transition hover:bg-white/5 hover:text-veil-200"
             >
+              <link.icon width={15} height={15} className="opacity-70" />
               {link.label}
             </Link>
           ))}
           <Link
             href={admin ? "/" : "/admin"}
             onClick={() => setOpen(false)}
-            className="rounded-xl bg-veil-400/20 px-4 py-3 text-sm font-semibold text-veil-200 transition hover:bg-veil-400/30"
+            className="flex items-center gap-2 rounded-xl bg-veil-400/20 px-4 py-3 text-sm font-semibold text-veil-200 transition hover:bg-veil-400/30"
           >
-            {admin ? "← Return to Player" : "Open Admin Console"}
+            {admin ? <ArrowLeftIcon width={15} height={15} /> : <ShieldIcon width={15} height={15} />}
+            {admin ? "Return to Player" : "Open Admin Console"}
           </Link>
         </div>
       ) : null}

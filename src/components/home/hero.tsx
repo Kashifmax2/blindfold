@@ -5,7 +5,7 @@ import Link from "next/link";
 import { formatPlays } from "@/lib/format";
 import { usePlayer } from "@/components/player/player-provider";
 import { CircularVisualizer, MiniEq } from "@/components/player/visuals";
-import { ArrowIcon, PauseIcon, PlayIcon } from "@/components/site/icons";
+import { ArrowIcon, CrownIcon, PauseIcon, PlayIcon, SparkleIcon } from "@/components/site/icons";
 import { Reveal, SectionLabel } from "@/components/site/ui";
 
 type Stats = { tracks: number; plays: number; minutes: number; artists: number };
@@ -83,7 +83,8 @@ export function Hero({ stats }: { stats: Stats }) {
                 href="#vault"
                 className="group inline-flex items-center gap-2 rounded-full border border-amber-300/50 bg-amber-300/10 px-6 py-3.5 font-display text-sm font-semibold tracking-[0.14em] text-amber-200 uppercase transition hover:border-amber-300 hover:bg-amber-300/20"
               >
-                👑 Upload your song
+                <CrownIcon width={16} height={16} className="transition group-hover:scale-110" />
+                Upload your song
               </Link>
 
               <Link
@@ -225,7 +226,7 @@ export function Marquee() {
                 className="flex items-center gap-10 font-display text-xs tracking-[0.34em] whitespace-nowrap text-mist-500 uppercase"
               >
                 {label}
-                <span className="text-veil-400">✦</span>
+                <SparkleIcon width={11} height={11} className="text-veil-400/70" />
               </span>
             ))}
           </div>

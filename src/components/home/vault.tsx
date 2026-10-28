@@ -1,11 +1,20 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useRef, useState, type DragEvent, type FormEvent } from "react";
 import { formatBytes, formatTime } from "@/lib/format";
 import { VAULT_MAX_BYTES } from "@/lib/local-vault";
 import { usePlayer } from "@/components/player/player-provider";
 import { MiniEq } from "@/components/player/visuals";
-import { PauseIcon, PlayIcon, TrashIcon, UploadIcon } from "@/components/site/icons";
+import {
+  BoltIcon,
+  CrownIcon,
+  LockIcon,
+  PaletteIcon,
+  PauseIcon,
+  PlayIcon,
+  TrashIcon,
+  UploadIcon,
+} from "@/components/site/icons";
 import { CoverArt, Reveal, SectionLabel } from "@/components/site/ui";
 
 const THEMES = [
@@ -116,7 +125,7 @@ export function Vault() {
       });
       window.localStorage.setItem("blndfld:vaultArtist", artist.trim());
       window.localStorage.setItem("blndfld:vaultTheme", accent);
-      setNotice({ tone: "ok", text: `“${song.title}” saved to your computer — playing now.` });
+      setNotice({ tone: "ok", text: `â€œ${song.title}â€ saved to your computer â€” playing now.` });
       setFile(null);
       setTitle("");
       setDuration(0);
@@ -157,7 +166,8 @@ export function Vault() {
             <div className="relative grid gap-8 rounded-[2rem] bg-ink-950/92 p-6 backdrop-blur-2xl sm:p-8 lg:grid-cols-12">
               <div className="lg:col-span-5">
                 <span className="inline-flex items-center gap-2 rounded-full border border-amber-300/40 bg-amber-300/10 px-3.5 py-1.5 text-[11px] font-bold tracking-[0.3em] text-amber-200 uppercase">
-                  👑 VIP Vault
+                  <CrownIcon width={14} height={14} />
+                  VIP Vault
                 </span>
                 <h2 className="mt-5 font-display text-[clamp(1.9rem,4.4vw,3rem)] leading-[1.02] font-bold tracking-tight text-mist-100">
                   Upload your song
@@ -173,10 +183,19 @@ export function Vault() {
                   (never uploaded to a server), keeps its title and colour theme, and is waiting for you every time you
                   come back, with the full storm of effects.
                 </p>
-                <ul className="mt-6 grid gap-2 text-sm text-mist-300">
-                  <li>⚡ Live beat tracking: lightning, cracks, shockwaves, tornadoes</li>
-                  <li>🎨 Your colour theme lights up the whole room</li>
-                  <li>🔒 100% local, private and offline-ready</li>
+                <ul className="mt-6 grid gap-2.5 text-sm text-mist-300">
+                  <li className="flex items-start gap-2.5">
+                    <BoltIcon width={16} height={16} className="mt-0.5 shrink-0 text-amber-300" />
+                    <span>Live beat tracking: lightning, cracks, shockwaves, tornadoes</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <PaletteIcon width={16} height={16} className="mt-0.5 shrink-0 text-amber-300" />
+                    <span>Your colour theme lights up the whole room</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <LockIcon width={16} height={16} className="mt-0.5 shrink-0 text-amber-300" />
+                    <span>100% local, private and offline-ready</span>
+                  </li>
                 </ul>
                 {usage && usage.quota > 0 ? (
                   <div className="mt-6 max-w-xs">
@@ -229,13 +248,13 @@ export function Vault() {
                       <span className="max-w-full truncate font-display text-sm font-bold text-mist-100">{file.name}</span>
                       <span className="font-mono text-xs text-amber-200">
                         {formatBytes(file.size)}
-                        {duration ? ` · ${formatTime(duration)}` : ""}
+                        {duration ? ` Â· ${formatTime(duration)}` : ""}
                       </span>
                     </>
                   ) : (
                     <>
                       <span className="font-display text-sm font-semibold text-mist-100">Drop your song here or click to browse</span>
-                      <span className="text-xs text-mist-500">MP3 · WAV · OGG · M4A · FLAC · AAC up to 200MB</span>
+                      <span className="text-xs text-mist-500">MP3 Â· WAV Â· OGG Â· M4A Â· FLAC Â· AAC up to 200MB</span>
                     </>
                   )}
                 </label>
@@ -289,7 +308,7 @@ export function Vault() {
                   className="mt-6 w-full rounded-xl px-5 py-4 font-display text-sm font-bold tracking-[0.16em] text-ink-950 uppercase shadow-lg transition hover:scale-[1.02] active:scale-[0.98] disabled:opacity-60"
                   style={{ background: `linear-gradient(110deg,#fff3d1,${accent} 60%,#ff2fb0 140%)` }}
                 >
-                  {busy ? "Saving to your computer…" : "Save & play my song"}
+                  {busy ? "Saving to your computerâ€¦" : "Save & play my song"}
                 </button>
 
                 {notice || vaultError ? (
@@ -311,11 +330,11 @@ export function Vault() {
         {/* My vault songs */}
         <div className="mt-8">
           <div className="flex items-center justify-between">
-            <SectionLabel>My vault · {localSongs.length}</SectionLabel>
+            <SectionLabel>My vault Â· {localSongs.length}</SectionLabel>
           </div>
           {localSongs.length === 0 ? (
             <p className="mt-5 rounded-2xl border border-white/8 bg-ink-900/50 px-6 py-8 text-center text-sm text-mist-500">
-              {vaultReady ? "No songs yet. Upload your first one above and it'll be here every time you visit." : "Opening your vault…"}
+              {vaultReady ? "No songs yet. Upload your first one above and it'll be here every time you visit." : "Opening your vaultâ€¦"}
             </p>
           ) : (
             <ul className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -345,7 +364,7 @@ export function Vault() {
                         {active ? <MiniEq active={playing} className="h-3" /> : null}
                       </p>
                       <p className="truncate text-xs text-mist-400">
-                        {song.artist} · {formatTime(song.duration)} · {formatBytes(song.fileSize)}
+                        {song.artist} Â· {formatTime(song.duration)} Â· {formatBytes(song.fileSize)}
                       </p>
                     </div>
                     <label className="relative h-7 w-7 shrink-0 cursor-pointer rounded-full ring-1 ring-white/20" style={{ background: song.accent }} title="Change colour theme">

@@ -3,6 +3,9 @@
 import { formatTime } from "@/lib/format";
 import { CoverArt } from "@/components/site/ui";
 import {
+  AlertIcon,
+  BoltIcon,
+  GridIcon,
   MuteIcon,
   NextIcon,
   PauseIcon,
@@ -10,6 +13,7 @@ import {
   PrevIcon,
   RepeatIcon,
   ShuffleIcon,
+  TornadoIcon,
   VolumeIcon,
 } from "@/components/site/icons";
 import { usePlayer } from "./player-provider";
@@ -38,6 +42,9 @@ export function NowPlayingDock() {
   } = usePlayer();
 
   if (!current) return null;
+
+  const FxIcon =
+    fxMode === "CYBER" ? BoltIcon : fxMode === "DANGER" ? AlertIcon : fxMode === "COSMIC" ? TornadoIcon : GridIcon;
 
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
 
@@ -144,7 +151,7 @@ export function NowPlayingDock() {
               title="Click to cycle Visualizer FX Mode"
               className="flex items-center gap-1.5 rounded-full border border-veil-400/25 bg-veil-400/10 px-2.5 py-1 text-[11px] font-semibold tracking-wider text-veil-200 transition hover:border-veil-400/60 hover:bg-veil-400/20"
             >
-              <span>{fxMode === "CYBER" ? "⚡" : fxMode === "DANGER" ? "⚠️" : fxMode === "COSMIC" ? "🌌" : "🎛️"}</span>
+              <FxIcon width={13} height={13} className="shrink-0" />
               <span>{fxMode}</span>
             </button>
 

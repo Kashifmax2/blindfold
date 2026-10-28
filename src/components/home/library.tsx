@@ -84,7 +84,7 @@ export function Library() {
             const active = current?.id === song.id;
             const playing = active && isPlaying;
             return (
-              <Reveal as="article" key={song.id} delay={index * 60}>
+              <Reveal as="article" key={song.id} delay={index * 60} className="min-w-0">
                 <div
                   className="group glass relative h-full overflow-hidden rounded-3xl p-3 transition duration-500 hover:-translate-y-1.5"
                   style={{

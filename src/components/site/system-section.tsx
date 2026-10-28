@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { BoltIcon, ShieldIcon, UploadIcon, WaveIcon } from "./icons";
+import { ArrowLeftIcon, ArrowRightIcon, BoltIcon, ShieldIcon, UploadIcon, WaveIcon } from "./icons";
 import { Reveal, SectionLabel } from "./ui";
 
 const FEATURES = [
@@ -108,14 +108,19 @@ export function SiteFooter() {
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-mist-500">
-          <span className="rounded-full border border-white/10 px-3 py-1.5">
-            Space <span className="text-mist-400">play/pause</span>
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 px-3 py-1.5">
+            <kbd className="font-mono text-[10px] tracking-wide text-mist-300">Space</kbd>
+            <span className="text-mist-400">play/pause</span>
           </span>
-          <span className="rounded-full border border-white/10 px-3 py-1.5">
-            ⇧ ← → <span className="text-mist-400">skip</span>
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 px-3 py-1.5">
+            <kbd className="font-mono text-[10px] tracking-wide text-mist-300">Shift</kbd>
+            <ArrowLeftIcon width={11} height={11} className="text-mist-300" />
+            <ArrowRightIcon width={11} height={11} className="text-mist-300" />
+            <span className="text-mist-400">skip</span>
           </span>
-          <span className="rounded-full border border-white/10 px-3 py-1.5">
-            M <span className="text-mist-400">mute</span>
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 px-3 py-1.5">
+            <kbd className="font-mono text-[10px] tracking-wide text-mist-300">M</kbd>
+            <span className="text-mist-400">mute</span>
           </span>
         </div>
       </div>

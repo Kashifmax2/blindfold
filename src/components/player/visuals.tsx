@@ -1,8 +1,22 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { TIERS, heatRgb } from "@/lib/tiers";
+import { useEffect, useRef, useState, type ReactElement, type SVGProps } from "react";
+import { TIERS, heatRgb, type TierKey } from "@/lib/tiers";
 import { perf, type QualityChoice } from "@/lib/perf";
+import {
+  AlertIcon,
+  BoltIcon,
+  CometIcon,
+  FlameIcon,
+  GalaxyIcon,
+  GridIcon,
+  HeadphonesIcon,
+  MoonIcon,
+  RefreshIcon,
+  SparkleIcon,
+  TornadoIcon,
+  VoidIcon,
+} from "@/components/site/icons";
 import { hexToRgb, useCanvas, useFrame } from "./canvas-hooks";
 import { usePlayer, type FxMode } from "./player-provider";
 
@@ -183,11 +197,24 @@ export function SpectrumStage({ className = "" }: { className?: string }) {
 /* ------------------------------------------------------------------ */
 /* Live 9-tier intensity ladder                                        */
 /* ------------------------------------------------------------------ */
+const TIER_ICONS: Record<TierKey, (props: SVGProps<SVGSVGElement>) => ReactElement> = {
+  CALM: MoonIcon,
+  GROOVE: HeadphonesIcon,
+  HYPE: BoltIcon,
+  BLAZE: FlameIcon,
+  DANGER: AlertIcon,
+  INFERNO: CometIcon,
+  ULTRA: SparkleIcon,
+  HYPERSPACE: GalaxyIcon,
+  SINGULARITY: VoidIcon,
+};
+
 export function TierMeter({ compact = false }: { compact?: boolean }) {
   const segRefs = useRef<Array<HTMLSpanElement | null>>([]);
   const labelRef = useRef<HTMLSpanElement | null>(null);
   const pctRef = useRef<HTMLSpanElement | null>(null);
   const lastTier = useRef(-1);
+  const [tier, setTier] = useState<TierKey>(TIERS[0].key);
 
   useFrame((levels) => {
     const heatPos = levels.heat * TIERS.length;
@@ -200,14 +227,19 @@ export function TierMeter({ compact = false }: { compact?: boolean }) {
       el.style.boxShadow = fill > 0.5 ? `0 0 ${8 + fill * 10}px ${TIERS[i].color}` : "none";
     }
     if (pctRef.current) pctRef.current.textContent = `${Math.round(levels.heat * 100)}%`;
-    if (lastTier.current !== levels.tierIndex && labelRef.current) {
+    if (lastTier.current !== levels.tierIndex) {
       lastTier.current = levels.tierIndex;
       const t = TIERS[levels.tierIndex];
-      labelRef.current.textContent = `${t.icon} ${t.label}`;
-      labelRef.current.style.color = t.color;
-      labelRef.current.style.textShadow = `0 0 14px ${t.color}`;
+      if (labelRef.current) {
+        labelRef.current.textContent = t.label;
+        labelRef.current.style.color = t.color;
+        labelRef.current.style.textShadow = `0 0 14px ${t.color}`;
+      }
+      setTier(t.key);
     }
   });
+
+  const TierIcon = TIER_ICONS[tier];
 
   return (
     <div className="flex items-center gap-2.5" title="Intensity: the louder & denser the song, the higher the colour climbs">
@@ -224,11 +256,17 @@ export function TierMeter({ compact = false }: { compact?: boolean }) {
         ))}
       </div>
       <span
-        ref={labelRef}
-        className={`font-display text-[11px] font-bold tracking-[0.14em] uppercase ${compact ? "hidden sm:inline" : ""}`}
-        style={{ color: TIERS[0].color, minWidth: compact ? undefined : 96 }}
+        className="inline-flex items-center gap-1.5"
+        style={{ color: TIERS.find((t) => t.key === tier)?.color }}
       >
-        {TIERS[0].icon} {TIERS[0].label}
+        <TierIcon width={compact ? 13 : 14} height={compact ? 13 : 14} />
+        <span
+          ref={labelRef}
+          className={`font-display text-[11px] font-bold tracking-[0.14em] uppercase ${compact ? "hidden sm:inline" : ""}`}
+          style={{ color: TIERS[0].color, minWidth: compact ? undefined : 82 }}
+        >
+          {TIERS[0].label}
+        </span>
       </span>
       {!compact ? (
         <span ref={pctRef} className="w-9 font-mono text-[11px] text-mist-400">
@@ -291,11 +329,11 @@ export function QualityControl() {
 export function FxControlBar() {
   const { fxMode, autoMorph, setFxMode, toggleAutoMorph } = usePlayer();
 
-  const modes: Array<{ key: FxMode; label: string; icon: string }> = [
-    { key: "CYBER", label: "Cyber Laser", icon: "⚡" },
-    { key: "DANGER", label: "Danger Storm", icon: "⚠️" },
-    { key: "COSMIC", label: "Cosmic Tornado", icon: "🌪️" },
-    { key: "MATRIX", label: "Matrix Glitch", icon: "🎛️" },
+  const modes: Array<{ key: FxMode; label: string; icon: (props: SVGProps<SVGSVGElement>) => ReactElement }> = [
+    { key: "CYBER", label: "Cyber Laser", icon: BoltIcon },
+    { key: "DANGER", label: "Danger Storm", icon: AlertIcon },
+    { key: "COSMIC", label: "Cosmic Tornado", icon: TornadoIcon },
+    { key: "MATRIX", label: "Matrix Glitch", icon: GridIcon },
   ];
 
   return (
@@ -316,7 +354,7 @@ export function FxControlBar() {
                   : "border border-white/8 bg-white/4 text-mist-400 hover:border-white/20 hover:text-mist-200"
               }`}
             >
-              <span>{m.icon}</span>
+              <m.icon width={14} height={14} className="shrink-0" />
               <span className="hidden sm:inline">{m.label}</span>
               <span className="sm:hidden">{m.key}</span>
             </button>
@@ -333,7 +371,7 @@ export function FxControlBar() {
               : "border border-white/8 text-mist-500 hover:text-mist-300"
           }`}
         >
-          <span>🔁</span>
+          <RefreshIcon width={12} height={12} />
           <span className="hidden md:inline">Auto {autoMorph ? "on" : "off"}</span>
         </button>
       </div>

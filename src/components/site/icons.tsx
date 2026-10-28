@@ -134,3 +134,129 @@ export const ArrowIcon = (props: IconProps) => (
     <path d="M5 12h14M13 6l6 6-6 6" />
   </svg>
 );
+
+export const ArrowLeftIcon = (props: IconProps) => (
+  <svg {...base(props)}>
+    <path d="M19 12H5M11 18l-6-6 6-6" />
+  </svg>
+);
+
+export const ArrowRightIcon = (props: IconProps) => (
+  <svg {...base(props)}>
+    <path d="M5 12h14M13 6l6 6-6 6" />
+  </svg>
+);
+
+export const CrownIcon = (props: IconProps) => (
+  <svg {...base(props)}>
+    <path d="M3.2 8.4 7 11.4l5-6.3 5 6.3 3.8-3-1.8 8.5H5z" />
+    <path d="M5.2 20.3h13.6" />
+  </svg>
+);
+
+export const MusicIcon = (props: IconProps) => (
+  <svg {...base(props)}>
+    <path d="M9.2 17.6V6.6l10-2v11" />
+    <circle cx="6.6" cy="17.8" r="2.6" />
+    <circle cx="16.6" cy="15.4" r="2.6" />
+  </svg>
+);
+
+export const TornadoIcon = (props: IconProps) => (
+  <svg {...base(props)}>
+    <path d="M3 5.5h18M5.5 9.5h13M8 13.5h8M10.2 17.5h4M12.4 21h.01" />
+  </svg>
+);
+
+export const GridIcon = (props: IconProps) => (
+  <svg {...base(props)}>
+    <rect x="3" y="3" width="6.6" height="6.6" rx="1.5" />
+    <rect x="14.4" y="4.6" width="6.6" height="6.6" rx="1.5" />
+    <rect x="4.6" y="14.4" width="6.6" height="6.6" rx="1.5" />
+    <rect x="14" y="14" width="6.6" height="6.6" rx="1.5" />
+  </svg>
+);
+
+export const MoonIcon = (props: IconProps) => (
+  <svg {...base(props)}>
+    <path d="M20.6 14.4A8.7 8.7 0 0 1 9.6 3.4a8.8 8.8 0 1 0 11 11z" />
+  </svg>
+);
+
+export const HeadphonesIcon = (props: IconProps) => (
+  <svg {...base(props)}>
+    <path d="M4.2 14.2v-2.1a7.8 7.8 0 0 1 15.6 0v2.1" />
+    <rect x="2.6" y="13.2" width="4.6" height="7.2" rx="2.3" />
+    <rect x="16.8" y="13.2" width="4.6" height="7.2" rx="2.3" />
+  </svg>
+);
+
+export const FlameIcon = (props: IconProps) => (
+  <svg {...base(props)}>
+    <path d="M12 2.8c3.3 3.3 5.6 6 5.6 9.4a5.6 5.6 0 0 1-11.2 0c0-2 1-3.6 2.2-4.9.2 1.4.8 2.4 1.8 2.9.2-2.6.6-5 1.6-7.4z" />
+    <path d="M12 21a2.2 2.2 0 0 0 2.2-2.2c0-1.4-1-2.3-2.2-3.6-1.2 1.3-2.2 2.2-2.2 3.6A2.2 2.2 0 0 0 12 21z" />
+  </svg>
+);
+
+export const AlertIcon = (props: IconProps) => (
+  <svg {...base(props)}>
+    <path d="M12 3.4 2.8 19.6h18.4z" />
+    <path d="M12 9v4.4M12 16.6h.01" />
+  </svg>
+);
+
+export const CometIcon = (props: IconProps) => (
+  <svg {...base(props)}>
+    <circle cx="15.8" cy="8.2" r="3.2" />
+    <path d="M13.4 10.6 3.6 20.4M9.2 14.4 3.8 15.6M11.6 16.8 10.4 21.4" />
+  </svg>
+);
+
+export const SparkleIcon = (props: IconProps) => (
+  <svg {...base(props)}>
+    <path d="M12 3.4c.9 4.4 3.7 7.2 8.1 8.1-4.4.9-7.2 3.7-8.1 8.1-.9-4.4-3.7-7.2-8.1-8.1 4.4-.9 7.2-3.7 8.1-8.1z" />
+  </svg>
+);
+
+export const GalaxyIcon = (props: IconProps) => (
+  <svg {...base(props)}>
+    <circle cx="12" cy="12" r="3" />
+    <ellipse cx="12" cy="12" rx="9.4" ry="4.1" transform="rotate(-26 12 12)" />
+    <circle cx="19.2" cy="7.6" r="1.1" fill="currentColor" stroke="none" />
+  </svg>
+);
+
+export const VoidIcon = (props: IconProps) => (
+  <svg {...base(props)}>
+    <circle cx="12" cy="12" r="2.6" fill="currentColor" stroke="none" />
+    <ellipse cx="12" cy="12" rx="9.3" ry="3.5" transform="rotate(18 12 12)" />
+    <path d="M12 6.6v1.2M12 16.2v1.2" />
+  </svg>
+);
+
+export const PaletteIcon = (props: IconProps) => (
+  <svg {...base(props)}>
+    <path d="M12 3a9 9 0 0 0 0 18c1.5 0 2.2-1 2.2-2.1 0-1 .6-1.6 1.7-1.6h1c1.9 0 3.1-1.3 3.1-3.2C20 8.2 16.6 3 12 3z" />
+    <circle cx="8" cy="9.4" r="1.05" fill="currentColor" stroke="none" />
+    <circle cx="12.4" cy="7.6" r="1.05" fill="currentColor" stroke="none" />
+    <circle cx="16" cy="10.2" r="1.05" fill="currentColor" stroke="none" />
+    <circle cx="7.4" cy="14" r="1.05" fill="currentColor" stroke="none" />
+  </svg>
+);
+
+export const LockIcon = (props: IconProps) => (
+  <svg {...base(props)}>
+    <rect x="4.4" y="10.4" width="15.2" height="10.2" rx="2.4" />
+    <path d="M8 10.4V8a4 4 0 0 1 8 0v2.4" />
+    <path d="M12 14.4v2.4" />
+  </svg>
+);
+
+export const RefreshIcon = (props: IconProps) => (
+  <svg {...base(props)}>
+    <path d="M20.4 11.2A8.5 8.5 0 0 0 5.6 6.6L3.6 8.7" />
+    <path d="M3.6 4.4v4.3h4.3" />
+    <path d="M3.6 12.8a8.5 8.5 0 0 0 14.8 4.6l2-2.1" />
+    <path d="M20.4 19.6v-4.3h-4.3" />
+  </svg>
+);

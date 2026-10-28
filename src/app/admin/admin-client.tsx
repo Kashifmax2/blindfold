@@ -24,6 +24,7 @@ import {
 import { SiteHeader } from "@/components/site/site-header";
 import {
   BoltIcon,
+  FlameIcon,
   PauseIcon,
   PlayIcon,
   ShieldIcon,
@@ -909,7 +910,9 @@ function CloudPanel({ adminToken }: { adminToken: string }) {
   return (
     <div className={`glass flex flex-col gap-3 rounded-2xl border p-4 sm:flex-row sm:items-center sm:justify-between ${tone}`}>
       <div className="flex items-start gap-3">
-        <span className="text-2xl" aria-hidden>🔥</span>
+        <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border bg-white/4 ${tone}`}>
+          <FlameIcon width={18} height={18} className="text-amber-300" />
+        </span>
         <div>
           <p className="font-display text-sm font-bold text-mist-100">
             Firebase cloud ·{" "}

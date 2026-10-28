@@ -2,20 +2,21 @@
 
 import Link from "next/link";
 import { Reveal } from "@/components/site/ui";
+import { ArrowIcon, BoltIcon, CrownIcon, MusicIcon } from "@/components/site/icons";
 
 const STEPS = [
   {
-    icon: "🎵",
+    icon: MusicIcon,
     title: "Pick a song",
     body: "Tap any card in the library, or press the big play button. Space bar also plays and pauses.",
   },
   {
-    icon: "👑",
+    icon: CrownIcon,
     title: "Add your own",
     body: "Use “Upload your song” to pick a track from your PC. It stays on your computer and comes back next time.",
   },
   {
-    icon: "⚡",
+    icon: BoltIcon,
     title: "Watch it react",
     body: "Lights, lightning and colours follow the beat. Loud parts climb the colour ladder automatically.",
   },
@@ -48,10 +49,10 @@ export function HowItWorks() {
                 <li key={step.title} className="rounded-2xl border border-white/8 bg-ink-950/60 p-5">
                   <div className="flex items-center gap-3">
                     <span
-                      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-lg"
+                      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-ink-950"
                       style={{ background: "linear-gradient(140deg,#eafbff,var(--tier,#35e0ff))" }}
                     >
-                      {step.icon}
+                      <step.icon width={19} height={19} />
                     </span>
                     <span className="font-mono text-[11px] text-mist-500">0{i + 1}</span>
                   </div>
@@ -88,9 +89,10 @@ export function HowItWorks() {
               </div>
               <Link
                 href="#vault"
-                className="ml-auto rounded-full border border-amber-300/40 bg-amber-300/10 px-4 py-2 text-[11px] font-bold tracking-[0.16em] text-amber-200 uppercase transition hover:bg-amber-300/20"
+                className="ml-auto inline-flex items-center gap-1.5 rounded-full border border-amber-300/40 bg-amber-300/10 px-4 py-2 text-[11px] font-bold tracking-[0.16em] text-amber-200 uppercase transition hover:bg-amber-300/20"
               >
-                Upload a song →
+                Upload a song
+                <ArrowIcon width={13} height={13} />
               </Link>
             </div>
           </div>
