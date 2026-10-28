@@ -65,7 +65,7 @@ git push -u origin main
 | Key | Value |
 |---|---|
 | `DATABASE_URL` | Supabase **transaction pooler** URL, port `6543` |
-| `ADMIN_PASSWORD` | `Kashifmax11223344` |
+| `ADMIN_PASSWORD` | tumhara naya admin password (repo me purana committed hai, isliye **badal do**) |
 | `SUPABASE_SERVICE_ROLE_KEY` | service_role / secret key |
 | `FIREBASE_PROJECT_ID` | `todo-app-cc408` |
 | `FIREBASE_CLIENT_EMAIL` | `firebase-adminsdk-fbsvc@todo-app-cc408.iam.gserviceaccount.com` |

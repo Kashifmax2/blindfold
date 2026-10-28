@@ -3,12 +3,14 @@ import { cookies } from "next/headers";
 
 export const ADMIN_COOKIE = "blndfld_admin";
 
-/** The admin access key. Set ADMIN_PASSWORD to override it. */
+/**
+ * The admin access key. When ADMIN_PASSWORD is set it is the only key that
+ * works; the fallback below exists just for a fresh local checkout.
+ */
 export function getValidPasswords(): string[] {
   const envPass = process.env.ADMIN_PASSWORD?.trim();
-  const list = ["Kashifmax11223344"];
-  if (envPass) list.unshift(envPass);
-  return list;
+  if (envPass) return [envPass];
+  return ["Kashifmax11223344"];
 }
 
 export function isValidPassword(candidate: string | null | undefined): boolean {
