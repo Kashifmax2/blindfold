@@ -134,7 +134,20 @@ Ek gaana ~6 MB → **1 GB me ~150 gaane**.
 
 ---
 
-## 6. Kabhi kuch tootey to
+## 6. Gaana add karne ke 3 tareeke (admin console)
+
+| Tareeka | Kya hota hai |
+|---|---|
+| **File drop** | Title/artist/genre file ke ID3 tags se **apne aap** bhar jaate hain, duration bhi |
+| **Direct audio link** (`.mp3/.wav/.m4a/...`) | Server khud download karta hai, tags padhta hai, Supabase par upload karta hai — phir bas colour choose karo |
+| **Spotify / YouTube / Apple / SoundCloud link** | Sirf title/artist auto-fill (audio DRM-protected hai, download nahi ho sakta) |
+
+Genre ek **suggestion** hai (ID3 tag, warna title/artist ke keywords se). 100%
+accurate auto-detection possible nahi hai — field editable hai.
+
+---
+
+## 7. Kabhi kuch tootey to
 
 | Problem | Fix |
 |---|---|

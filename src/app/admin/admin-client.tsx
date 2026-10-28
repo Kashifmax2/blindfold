@@ -32,6 +32,8 @@ import {
   UploadIcon,
 } from "@/components/site/icons";
 import { CoverArt, Reveal, SectionLabel } from "@/components/site/ui";
+import { guessGenre } from "@/lib/genre";
+import { parseBlob } from "music-metadata";
 
 const ACCENTS = ["#35e0ff", "#7c5cff", "#ff4fd8", "#4dffc3", "#ffb547", "#ff4f78"];
 
@@ -232,6 +234,12 @@ function Console({
   const [mood, setMood] = useState("Night");
   const [accent, setAccent] = useState(ACCENTS[0]);
   const [remoteUrl, setRemoteUrl] = useState("");
+  const [imported, setImported] = useState<{
+    key: string;
+    fileSize: number;
+    mimeType: string;
+  } | null>(null);
+  const [fetching, setFetching] = useState(false);
   const [featured, setFeatured] = useState(false);
   const [busy, setBusy] = useState(false);
   const [toast, setToast] = useState<Toast>(null);
@@ -250,6 +258,7 @@ function Console({
     (next: File | null) => {
       setFile(next);
       setFileDuration(0);
+      setImported(null);
       if (!next) return;
       if (!title) {
         setTitle(next.name.replace(/\.[^.]+$/, "").replace(/[-_]+/g, " "));
@@ -263,6 +272,22 @@ function Console({
       };
       probe.onerror = () => URL.revokeObjectURL(url);
       probe.src = url;
+
+      // Read the file's own tags so nothing has to be typed by hand.
+      void parseBlob(next, { duration: true })
+        .then((meta) => {
+          const artist = meta.common.artist || (meta.common.artists ?? []).join(", ");
+          if (meta.common.title) setTitle(meta.common.title);
+          if (artist) setArtist(artist);
+          const suggestion = guessGenre(
+            meta.common.genre ?? [],
+            meta.common.title,
+            artist,
+          );
+          if (suggestion) setGenre(suggestion);
+          if (meta.format.duration) setFileDuration(Math.round(meta.format.duration));
+        })
+        .catch(() => undefined);
     },
     [title],
   );
@@ -274,13 +299,83 @@ function Console({
     if (dropped) acceptFile(dropped);
   };
 
+  /** Pull title/artist/genre (and the audio, when the link is a real file). */
+  const fetchFromLink = async () => {
+    const link = remoteUrl.trim();
+    if (!link) {
+      setToast({ tone: "err", message: "Paste a link first." });
+      return;
+    }
+
+    setFetching(true);
+    setToast(null);
+    setImported(null);
+
+    const headers: Record<string, string> = { "content-type": "application/json" };
+    if (adminToken) {
+      headers.Authorization = `Bearer ${adminToken}`;
+      headers["x-admin-token"] = adminToken;
+    }
+
+    try {
+      const res = await fetch("/api/admin/import-url", {
+        method: "POST",
+        headers,
+        body: JSON.stringify({ url: link }),
+      });
+      const data = (await res.json().catch(() => ({}))) as {
+        kind?: "audio" | "metadata";
+        key?: string;
+        fileSize?: number;
+        mimeType?: string;
+        title?: string | null;
+        artist?: string | null;
+        genre?: string | null;
+        duration?: number | null;
+        note?: string;
+        error?: string;
+      };
+
+      if (!res.ok) {
+        setToast({ tone: "err", message: data.error ?? "That link could not be read." });
+        return;
+      }
+
+      if (data.title) setTitle(data.title);
+      if (data.artist) setArtist(data.artist);
+      if (data.genre) setGenre(data.genre);
+      if (data.duration) setFileDuration(data.duration);
+
+      if (data.kind === "audio" && data.key) {
+        setImported({
+          key: data.key,
+          fileSize: data.fileSize ?? 0,
+          mimeType: data.mimeType ?? "audio/mpeg",
+        });
+        setToast({
+          tone: "ok",
+          message: data.note ?? "Imported. Colour choose karo aur Publish dabao.",
+        });
+      } else {
+        setToast({
+          tone: "err",
+          message: data.note ?? "Sirf details mili — audio file choose karo.",
+        });
+      }
+    } catch {
+      setToast({ tone: "err", message: "Network error while reading that link." });
+    } finally {
+      setFetching(false);
+    }
+  };
+
   const submit = async (event: FormEvent) => {
     event.preventDefault();
     if (!title.trim()) {
       setToast({ tone: "err", message: "Please enter a track title." });
       return;
     }
-    if (!file && !remoteUrl.trim()) {
+    if (!file && !imported && !remoteUrl.trim()) {
       setToast({ tone: "err", message: "Choose an audio file or paste an audio link." });
       return;
     }
@@ -320,7 +415,18 @@ function Console({
             .catch(() => null)
         : null;
 
-      if (file && ticket?.driver === "supabase" && ticket.uploadUrl && ticket.key) {
+      if (imported) {
+        res = await fetch("/api/songs", {
+          method: "POST",
+          headers: { ...headers, "content-type": "application/json" },
+          body: JSON.stringify({
+            ...metadata,
+            storageKey: imported.key,
+            fileSize: imported.fileSize,
+            mimeType: imported.mimeType,
+          }),
+        });
+      } else if (file && ticket?.driver === "supabase" && ticket.uploadUrl && ticket.key) {
         const put = await fetch(ticket.uploadUrl, {
           method: "PUT",
           headers: {
@@ -384,6 +490,7 @@ function Console({
       setTitle("");
       setArtist("");
       setRemoteUrl("");
+      setImported(null);
       setFeatured(false);
       if (fileInput.current) fileInput.current.value = "";
     } catch {
@@ -590,13 +697,36 @@ function Console({
               </div>
 
               {!file ? (
-                <Field label="Or Direct Audio URL">
-                  <input
-                    value={remoteUrl}
-                    onChange={(e) => setRemoteUrl(e.target.value)}
-                    placeholder="https://cdn.example.com/audio.mp3"
-                    className={inputClass}
-                  />
+                <Field label="Or Paste a Link (audio file / Spotify / YouTube)">
+                  <div className="flex gap-2">
+                    <input
+                      value={remoteUrl}
+                      onChange={(e) => {
+                        setRemoteUrl(e.target.value);
+                        setImported(null);
+                      }}
+                      placeholder="https://… mp3 link, Spotify ya YouTube"
+                      className={`${inputClass} min-w-0 flex-1`}
+                    />
+                    <button
+                      type="button"
+                      onClick={fetchFromLink}
+                      disabled={fetching || !remoteUrl.trim()}
+                      className="shrink-0 rounded-xl border border-veil-400/40 bg-veil-400/15 px-4 text-[11px] font-bold tracking-[0.14em] text-veil-200 uppercase transition hover:bg-veil-400/25 disabled:opacity-50"
+                    >
+                      {fetching ? "…" : "Fetch"}
+                    </button>
+                  </div>
+                  {imported ? (
+                    <p className="mt-2 text-[11px] leading-relaxed text-veil-200">
+                      Audio cloud par upload ho gaya — bas colour choose karo, phir Publish.
+                    </p>
+                  ) : (
+                    <p className="mt-2 text-[11px] leading-relaxed text-mist-500">
+                      Direct mp3/wav link = poora gaana import. Spotify/YouTube = sirf
+                      title/artist (audio DRM-protected).
+                    </p>
+                  )}
                 </Field>
               ) : null}
 

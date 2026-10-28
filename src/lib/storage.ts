@@ -158,9 +158,16 @@ export function isStorageKey(value: string) {
 
 export async function uploadExists(key: string) {
   const url = uploadUrl(key);
-  if (!url) return false;
-  const res = await fetch(url, { method: "HEAD" }).catch(() => null);
-  return res?.ok ?? false;
+  if (url) {
+    const res = await fetch(url, { method: "HEAD" }).catch(() => null);
+    if (res?.ok) return true;
+  }
+  try {
+    await stat(path.join(UPLOAD_DIR, path.basename(key)));
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 export type UploadTicket = { key: string; uploadUrl: string };
@@ -198,8 +205,14 @@ export async function createUploadTicket(
 
 export async function saveUpload(file: File) {
   const buffer = Buffer.from(await file.arrayBuffer());
-  const key = storageKeyFor(file.name, file.type);
-  const contentType = file.type || "audio/mpeg";
+  const saved = await saveBuffer(buffer, file.name, file.type || "audio/mpeg");
+  return { ...saved, buffer };
+}
+
+/** Store audio that was fetched from a URL (or any other in-memory buffer). */
+export async function saveBuffer(buffer: Buffer, fileName: string, mime: string) {
+  const key = storageKeyFor(fileName, mime);
+  const contentType = mime || "audio/mpeg";
 
   const creds = supabaseCreds();
   if (storageBackend() === "supabase" && creds) {
@@ -225,12 +238,12 @@ export async function saveUpload(file: File) {
       );
     }
 
-    return { key, size: buffer.byteLength, buffer, backend: "supabase" as const };
+    return { key, size: buffer.byteLength, backend: "supabase" as const };
   }
 
   await mkdir(UPLOAD_DIR, { recursive: true });
   await writeFile(path.join(UPLOAD_DIR, key), buffer);
-  return { key, size: buffer.byteLength, buffer, backend: "local" as const };
+  return { key, size: buffer.byteLength, backend: "local" as const };
 }
 
 /** Re-hydrate a file pulled back from cloud storage into the local disk cache. */
