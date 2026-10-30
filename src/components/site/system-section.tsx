@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SponsoredLink } from "./ads";
 import { ArrowLeftIcon, ArrowRightIcon, BoltIcon, ShieldIcon, UploadIcon, WaveIcon } from "./icons";
 import { Reveal, SectionLabel } from "./ui";
 
@@ -124,9 +125,12 @@ export function SiteFooter() {
           </span>
         </div>
       </div>
-      <p className="mx-auto mt-8 max-w-6xl px-5 text-[11px] tracking-[0.2em] text-mist-500/70 uppercase">
-        © {new Date().getFullYear()} Blindfold — eyes closed, volume up.
-      </p>
+      <div className="mx-auto mt-8 flex max-w-6xl flex-wrap items-center gap-4 px-5">
+        <p className="text-[11px] tracking-[0.2em] text-mist-500/70 uppercase">
+          © {new Date().getFullYear()} Blindfold — eyes closed, volume up.
+        </p>
+        <SponsoredLink className="ml-auto" />
+      </div>
     </footer>
   );
 }

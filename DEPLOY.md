@@ -147,7 +147,46 @@ accurate auto-detection possible nahi hai — field editable hai.
 
 ---
 
-## 7. Kabhi kuch tootey to
+## 7. Ads / Monetization (ProfitOn)
+
+Teen cheezein lagi hain, sab **ek hi file** se control hoti hain:
+`src/lib/monetization.ts`
+
+| Kya | Kahan |
+|---|---|
+| **Pops** (popunder) | `pops.src` — page load ke 1s baad load hota hai |
+| **Shuffle box** | `shuffleBox.src` — 2s baad load hota hai |
+| **Smartlink** | `smartlink.url` — footer ka "Sponsored" link + first-click popunder |
+
+**First-click popunder:** user site par pehla click kare (kuch bhi), 10 minute me
+ek baar smartlink naya tab me khulta hai. Baar baar nahi khulta — warna browser
+aur ad network dono block kar dete hain.
+
+**Band karna (bina code chhue):**
+
+```text
+Vercel → Settings → Environment Variables
+NEXT_PUBLIC_MONETIZATION = off
+```
+→ Redeploy. Sab ads gayab (scripts, popunder, sponsored link — sab).
+
+**Poora nikalna (code se):**
+
+1. `src/lib/monetization.ts` delete karo
+2. `src/components/site/ads.tsx` delete karo
+3. `src/app/layout.tsx` se `<AdSlots />` aur uski import hatao
+4. `src/components/site/system-section.tsx` se `<SponsoredLink />` + import hatao
+
+**Frequency badalni ho:** `cooldownMs` (default 10 min) — kam karo to zyada
+opens. Dhyan rakho: 1-2 minute se kam karne par Google/browser "popup spam"
+samajh kar block kar sakte hain.
+
+**Admin console par ads kabhi nahi chalte** (`blockedPaths: ["/admin"]`), warna
+upload karte waqt popup kudta rahega.
+
+---
+
+## 8. Kabhi kuch tootey to
 
 | Problem | Fix |
 |---|---|
