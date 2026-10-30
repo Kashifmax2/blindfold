@@ -22,6 +22,11 @@ export const metadata: Metadata = {
   description:
     "A blindfolded listening room: audio-reactive visuals, glass spectrum rails and an admin console for uploading tracks.",
   icons: { icon: "/brand/logo.png" },
+  verification: {
+    other: {
+      "profiton-domain-verification": "776df637807e389cde960bf05aead208ac68a6802c11033517f28a0e5d89aa4d",
+    },
+  },
 };
 
 export const viewport: Viewport = {
