@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import { Inter, Space_Grotesk } from "next/font/google";
-import { AdSlots } from "@/components/site/ads";
 import "./globals.css";
 
 const display = Space_Grotesk({
@@ -37,10 +36,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={`${display.variable} ${sans.variable}`}>
-      <body className="font-sans antialiased">
-        {children}
-        <AdSlots />
-      </body>
+      <body className="font-sans antialiased">{children}</body>
     </html>
   );
 }
